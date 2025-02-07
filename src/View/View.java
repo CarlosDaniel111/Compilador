@@ -2,22 +2,21 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.table.DefaultTableModel;
+
+import Controller.Controller;
 
 public class View extends JFrame {
 
-  private JButton btnLexico;
-  private JTextArea txtCodigo, txtErrores, txtTokens;
+  private JButton btnScanner;
+  private JTextArea txtCodigo, txtConsola, txtTokens;
   private JMenuItem menuAbrir, menuGuardar, menuSalir;
-  private JTable tblSimbolo;
-  private DefaultTableModel modelo;
 
   public View() {
     super("Compilador Tec++");
     hazInterfaz();
   }
 
-  public void hazInterfaz() {
+  private void hazInterfaz() {
     setSize(1024, 768);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
@@ -34,7 +33,7 @@ public class View extends JFrame {
     menuBar.add(menu);
     setJMenuBar(menuBar);
 
-    JLabel lblTitulo = new JLabel("Compilador");
+    JLabel lblTitulo = new JLabel("Compilador Tec++");
     lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
     lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
     add(lblTitulo, BorderLayout.NORTH);
@@ -52,23 +51,6 @@ public class View extends JFrame {
     JPanel panelCen = new JPanel();
     panelCen.setLayout(new GridLayout(0, 1));
 
-    JPanel panelCen1 = new JPanel();
-    panelCen1.setLayout(new BorderLayout());
-    panelCen1.setBorder(BorderFactory.createTitledBorder("Tabla de simbolos"));
-    modelo = new DefaultTableModel(new String[] { "Nombre", "Tipo", "Alcance", "Parametros", "Retorno" }, 0);
-    tblSimbolo = new JTable(modelo);
-    panelCen1.add(new JScrollPane(tblSimbolo), BorderLayout.CENTER);
-    panelCen.add(panelCen1);
-
-    JPanel panelCen2 = new JPanel();
-    panelCen2.setLayout(new BorderLayout());
-    panelCen2.setBorder(BorderFactory.createTitledBorder("Errores"));
-    txtErrores = new JTextArea();
-    txtErrores.setEditable(false);
-    panelCen2.add(new JScrollPane(txtErrores));
-    panelCen.add(panelCen2);
-    panelCentro.add(panelCen);
-
     JPanel panelDer = new JPanel();
     panelDer.setLayout(new BorderLayout());
     panelDer.setBorder(BorderFactory.createTitledBorder("Tokens"));
@@ -80,12 +62,61 @@ public class View extends JFrame {
     add(panelCentro);
 
     JPanel panelSur = new JPanel();
-    btnLexico = new JButton("Analisis Lexico");
-    btnLexico.setEnabled(false);
-    panelSur.add(btnLexico);
+    panelSur.setLayout(new BorderLayout());
+    JPanel panelSur1 = new JPanel();
+    panelSur1.setLayout(new BorderLayout());
+    panelSur1.setBorder(BorderFactory.createTitledBorder("Consola"));
+    txtConsola = new JTextArea();
+    txtConsola.setEditable(false);
+    txtConsola.setForeground(Color.RED);
+    txtConsola.setPreferredSize(new Dimension(0, 100));
+    panelSur1.add(new JScrollPane(txtConsola), BorderLayout.CENTER);
+    panelSur.add(panelSur1, BorderLayout.CENTER);
+
+    JPanel panelSur2 = new JPanel();
+    btnScanner = new JButton("Scanner");
+    btnScanner.setEnabled(false);
+    panelSur2.add(btnScanner);
+    panelSur.add(panelSur2, BorderLayout.SOUTH);
     add(panelSur, BorderLayout.SOUTH);
 
     setVisible(true);
 
+  }
+
+  public void hazEscuchas(Controller controlador) {
+    menuAbrir.addActionListener(controlador);
+    menuGuardar.addActionListener(controlador);
+    menuSalir.addActionListener(controlador);
+    btnScanner.addActionListener(controlador);
+    txtCodigo.addKeyListener(controlador);
+  }
+
+  public JMenuItem getMenuAbrir() {
+    return menuAbrir;
+  }
+
+  public JMenuItem getMenuGuardar() {
+    return menuGuardar;
+  }
+
+  public JMenuItem getMenuSalir() {
+    return menuSalir;
+  }
+
+  public JButton getBtnScanner() {
+    return btnScanner;
+  }
+
+  public JTextArea getTxtCodigo() {
+    return txtCodigo;
+  }
+
+  public JTextArea getTxtConsola() {
+    return txtConsola;
+  }
+
+  public JTextArea getTxtTokens() {
+    return txtTokens;
   }
 }
