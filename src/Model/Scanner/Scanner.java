@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import Model.utils.Constantes;
 
 public class Scanner {
-
   private ArrayList<Token> tokens;
   private BufferedReader in;
   private String errores;
-  private int nlinea, ncolumna;
+  private int nlinea;
   private char c;
 
   public void analizar(String texto) {
@@ -19,14 +18,11 @@ public class Scanner {
     tokens = new ArrayList<>();
     errores = "";
     nlinea = 1;
-    ncolumna = 0;
     try {
       c = (char) in.read();
-      ncolumna++;
       while (c != (char) -1) {
         if (c == '\n') {
           nlinea++;
-          ncolumna = 0;
           c = (char) in.read();
           continue;
         }
@@ -47,8 +43,8 @@ public class Scanner {
         } else if (c == '\'') {
           checarCadena();
         } else {
-          errores += "Error lexico en la linea " + nlinea + " columna " + ncolumna + ": caracter invalido\n";
-          ncolumna++;
+          errores += "Error lexico en la linea " + nlinea + ": caracter invalido\n";
+          tokens.add(new Token("Invalido", String.valueOf(c), nlinea));
           c = (char) in.read();
         }
       }
@@ -62,28 +58,25 @@ public class Scanner {
     while (Character.isDigit(c)) {
       num += c;
       c = (char) in.read();
-      ncolumna++;
     }
     if (Character.isLetter(c)) {
-      errores += "Error lexico en la linea " + nlinea + " columna " + ncolumna + ": caracter invalido\n";
+      errores += "Error lexico en la linea " + nlinea + ": caracter invalido\n";
       return;
     }
     if (c == '.') {
       num += c;
       c = (char) in.read();
-      ncolumna++;
       if (!Character.isDigit(c)) {
-        errores += "Error lexico en la linea " + nlinea + " columna " + ncolumna + ": caracter invalido\n";
+        errores += "Error lexico en la linea " + nlinea + ": caracter invalido\n";
         return;
       }
       while (Character.isDigit(c)) {
         num += c;
         c = (char) in.read();
-        ncolumna++;
       }
-      tokens.add(new Token(Constantes.DECIMAL, num, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.DECIMAL, num, nlinea));
     } else {
-      tokens.add(new Token(Constantes.NUMERO, num, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.NUMERO, num, nlinea));
     }
   }
 
@@ -92,12 +85,11 @@ public class Scanner {
     while (Character.isLetterOrDigit(c)) {
       id += c;
       c = (char) in.read();
-      ncolumna++;
     }
     if (Constantes.esPalabraReservada(id)) {
-      tokens.add(new Token("PR", id, nlinea, ncolumna));
+      tokens.add(new Token("PR", id, nlinea));
     } else {
-      tokens.add(new Token(Constantes.ID, id, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.ID, id, nlinea));
     }
   }
 
@@ -105,42 +97,39 @@ public class Scanner {
     String op = "";
     op += c;
     c = (char) in.read();
-    ncolumna++;
     if (op.equals("<")) {
       if (c == '=') {
         op += c;
         c = (char) in.read();
-        ncolumna++;
-        tokens.add(new Token(Constantes.MENOR_IGUAL, op, nlinea, ncolumna));
+        tokens.add(new Token(Constantes.MENOR_IGUAL, op, nlinea));
       } else {
-        tokens.add(new Token(Constantes.MENOR, op, nlinea, ncolumna));
+        tokens.add(new Token(Constantes.MENOR, op, nlinea));
       }
     } else if (op.equals(">")) {
       if (c == '=') {
         op += c;
         c = (char) in.read();
-        ncolumna++;
-        tokens.add(new Token(Constantes.MAYOR_IGUAL, op, nlinea, ncolumna));
+
+        tokens.add(new Token(Constantes.MAYOR_IGUAL, op, nlinea));
       } else {
-        tokens.add(new Token(Constantes.MAYOR, op, nlinea, ncolumna));
+        tokens.add(new Token(Constantes.MAYOR, op, nlinea));
       }
     } else if (op.equals("=")) {
       if (c == '=') {
         op += c;
         c = (char) in.read();
-        ncolumna++;
-        tokens.add(new Token(Constantes.IGUAL, op, nlinea, ncolumna));
+
+        tokens.add(new Token(Constantes.IGUAL, op, nlinea));
       } else {
-        tokens.add(new Token(Constantes.ASIGNACION, op, nlinea, ncolumna));
+        tokens.add(new Token(Constantes.ASIGNACION, op, nlinea));
       }
     } else if (op.equals("!")) {
       if (c == '=') {
         op += c;
         c = (char) in.read();
-        ncolumna++;
-        tokens.add(new Token(Constantes.DIFERENTE, op, nlinea, ncolumna));
+        tokens.add(new Token(Constantes.DIFERENTE, op, nlinea));
       } else {
-        errores += "Error lexico en la linea " + nlinea + " columna " + ncolumna + ": caracter invalido\n";
+        errores += "Error lexico en la linea " + nlinea + ": caracter invalido\n";
       }
     }
   }
@@ -149,15 +138,15 @@ public class Scanner {
     String op = "";
     op += c;
     c = (char) in.read();
-    ncolumna++;
+
     if (op.equals("+")) {
-      tokens.add(new Token(Constantes.MAS, op, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.MAS, op, nlinea));
     } else if (op.equals("-")) {
-      tokens.add(new Token(Constantes.MENOS, op, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.MENOS, op, nlinea));
     } else if (op.equals("*")) {
-      tokens.add(new Token(Constantes.MULTIPLICACION, op, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.MULTIPLICACION, op, nlinea));
     } else if (op.equals("/")) {
-      tokens.add(new Token(Constantes.DIVISION, op, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.DIVISION, op, nlinea));
     }
   }
 
@@ -165,17 +154,17 @@ public class Scanner {
     String simbolo = "";
     simbolo += c;
     c = (char) in.read();
-    ncolumna++;
+
     if (simbolo.equals("(")) {
-      tokens.add(new Token(Constantes.PARENTESIS_APE, simbolo, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.PARENTESIS_APE, simbolo, nlinea));
     } else if (simbolo.equals(")")) {
-      tokens.add(new Token(Constantes.PARENTESIS_CIE, simbolo, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.PARENTESIS_CIE, simbolo, nlinea));
     } else if (simbolo.equals("[")) {
-      tokens.add(new Token(Constantes.CORCHETE_APE, simbolo, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.CORCHETE_APE, simbolo, nlinea));
     } else if (simbolo.equals("]")) {
-      tokens.add(new Token(Constantes.CORCHETE_CIE, simbolo, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.CORCHETE_CIE, simbolo, nlinea));
     } else if (simbolo.equals(";")) {
-      tokens.add(new Token(Constantes.PUNTO_Y_COMA, simbolo, nlinea, ncolumna));
+      tokens.add(new Token(Constantes.PUNTO_Y_COMA, simbolo, nlinea));
     }
   }
 
@@ -183,20 +172,24 @@ public class Scanner {
     String cadena = "";
     cadena += c;
     c = (char) in.read();
-    ncolumna++;
+
     while (c != '\'') {
       cadena += c;
       c = (char) in.read();
-      ncolumna++;
+
     }
     cadena += c;
     c = (char) in.read();
-    ncolumna++;
-    tokens.add(new Token(Constantes.CADENA, cadena, nlinea, ncolumna));
+
+    tokens.add(new Token(Constantes.CADENA, cadena, nlinea));
   }
 
   public String getErrores() {
     return errores;
+  }
+
+  public ArrayList<Token> getTokensArray() {
+    return tokens;
   }
 
   public String getTokens() {
@@ -206,5 +199,4 @@ public class Scanner {
     }
     return texto;
   }
-
 }

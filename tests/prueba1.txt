@@ -1,0 +1,14 @@
+ITC
+  cad nombre;
+  nombre = 'Carlos';
+  fracc altura;
+  altura = 1.82;
+  ent calificacion;
+  MOSTRAR('Ingresa tu calificacion');
+  LEER(calificacion);
+  si(calificacion>=70)[
+    MOSTRAR('Aprobaste');
+  ]sino[
+    MOSTRAR('Reprobaste');
+  ];
+TECNM

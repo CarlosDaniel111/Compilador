@@ -1,7 +1,9 @@
 package Controller;
 
+import java.awt.Color;
 import java.awt.event.*;
 import Model.Scanner.Scanner;
+import Model.Parser.Parser;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -12,11 +14,13 @@ import View.View;
 public class Controller implements ActionListener, KeyListener {
   private View view;
   private Scanner scanner;
+  private Parser parser;
 
   public Controller(View view) {
     this.view = view;
     this.view.hazEscuchas(this);
     scanner = new Scanner();
+    parser = new Parser();
   }
 
   @Override
@@ -57,16 +61,30 @@ public class Controller implements ActionListener, KeyListener {
     // Botones
     if (e.getSource() == view.getBtnScanner()) {
       scanner.analizar(view.getTxtCodigo().getText());
-      view.getTxtConsola().setText(scanner.getErrores());
+      view.getTxtTokens().setText(scanner.getTokens());
       if (scanner.getErrores().length() == 0) {
-        JOptionPane.showMessageDialog(view, "Scanner exitoso", "Compilador",
-            JOptionPane.INFORMATION_MESSAGE);
-        view.getTxtTokens().setText(scanner.getTokens());
+        view.getTxtConsola().setForeground(new Color(31, 185, 62));
+        view.getTxtConsola().setText("Scanner exitoso");
+        view.getBtnScanner().setBackground(Color.GREEN);
+        view.getBtnParser().setEnabled(true);
       } else {
-        JOptionPane.showMessageDialog(view, "Scanner con errores", "Compilador",
-            JOptionPane.ERROR_MESSAGE);
-        view.getTxtTokens().setText("");
+        view.getTxtConsola().setForeground(Color.RED);
+        view.getTxtConsola().setText(scanner.getErrores());
+        view.getBtnParser().setEnabled(false);
       }
+      return;
+    }
+    if (e.getSource() == view.getBtnParser()) {
+      parser.analizar(scanner.getTokensArray());
+      if (parser.getError().length() == 0) {
+        view.getTxtConsola().setForeground(new Color(31, 185, 62));
+        view.getTxtConsola().setText("Scanner exitoso\nParser exitoso");
+        view.getBtnParser().setBackground(Color.GREEN);
+      } else {
+        view.getTxtConsola().setForeground(Color.RED);
+        view.getTxtConsola().setText(parser.getError());
+      }
+      return;
     }
   }
 
@@ -83,6 +101,7 @@ public class Controller implements ActionListener, KeyListener {
   @Override
   public void keyReleased(KeyEvent e) {
     if (e.getSource() == view.getTxtCodigo()) {
+      view.getBtnParser().setEnabled(false);
       if (view.getTxtCodigo().getText().length() == 0) {
         view.getBtnScanner().setEnabled(false);
       } else {

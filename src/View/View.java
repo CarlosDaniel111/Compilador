@@ -7,7 +7,7 @@ import Controller.Controller;
 
 public class View extends JFrame {
 
-  private JButton btnScanner;
+  private JButton btnScanner, btnParser;
   private JTextArea txtCodigo, txtConsola, txtTokens;
   private JMenuItem menuAbrir, menuGuardar, menuSalir;
 
@@ -68,15 +68,19 @@ public class View extends JFrame {
     panelSur1.setBorder(BorderFactory.createTitledBorder("Consola"));
     txtConsola = new JTextArea();
     txtConsola.setEditable(false);
-    txtConsola.setForeground(Color.RED);
     txtConsola.setPreferredSize(new Dimension(0, 100));
     panelSur1.add(new JScrollPane(txtConsola), BorderLayout.CENTER);
     panelSur.add(panelSur1, BorderLayout.CENTER);
 
     JPanel panelSur2 = new JPanel();
     btnScanner = new JButton("Scanner");
+    btnScanner.setContentAreaFilled(true);
     btnScanner.setEnabled(false);
+    btnParser = new JButton("Parser");
+    btnParser.setContentAreaFilled(true);
+    btnParser.setEnabled(false);
     panelSur2.add(btnScanner);
+    panelSur2.add(btnParser);
     panelSur.add(panelSur2, BorderLayout.SOUTH);
     add(panelSur, BorderLayout.SOUTH);
 
@@ -89,6 +93,7 @@ public class View extends JFrame {
     menuGuardar.addActionListener(controlador);
     menuSalir.addActionListener(controlador);
     btnScanner.addActionListener(controlador);
+    btnParser.addActionListener(controlador);
     txtCodigo.addKeyListener(controlador);
   }
 
@@ -106,6 +111,10 @@ public class View extends JFrame {
 
   public JButton getBtnScanner() {
     return btnScanner;
+  }
+
+  public JButton getBtnParser() {
+    return btnParser;
   }
 
   public JTextArea getTxtCodigo() {

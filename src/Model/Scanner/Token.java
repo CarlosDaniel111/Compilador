@@ -2,13 +2,12 @@ package Model.Scanner;
 
 public class Token {
   private String token, valor;
-  private int linea, columna;
+  private int linea;
 
-  public Token(String token, String valor, int linea, int columna) {
+  public Token(String token, String valor, int linea) {
     this.token = token;
     this.valor = valor;
     this.linea = linea;
-    this.columna = columna;
   }
 
   public String getToken() {
@@ -17,6 +16,10 @@ public class Token {
 
   public String getValor() {
     return valor;
+  }
+
+  public int getLinea() {
+    return linea;
   }
 
   @Override
