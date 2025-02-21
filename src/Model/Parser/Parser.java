@@ -31,18 +31,28 @@ public class Parser {
   }
 
   private void listaDeclaraciones(boolean dentroIf) throws Exception {
+    if (idx == tokens.size()) {
+      throw new Exception("Error sintáctico: se esperaba una declaración");
+    }
     if (dentroIf) {
       while (!tokens.get(idx).getToken().equals(Constantes.CORCHETE_CIE)) {
         declaracion();
         checarToken(Constantes.PUNTO_Y_COMA, "se esperaba un punto y coma");
         idx++;
+        if (idx == tokens.size()) {
+          throw new Exception("Error sintáctico: se esperaba un corchete de cierre");
+        }
       }
       return;
     }
+
     while (!tokens.get(idx).getValor().equals(Constantes.TECNM)) {
       declaracion();
       checarToken(Constantes.PUNTO_Y_COMA, "se esperaba un punto y coma");
       idx++;
+      if (idx == tokens.size()) {
+        throw new Exception("Error sintáctico: se esperaba una declaración");
+      }
     }
   }
 
@@ -53,8 +63,14 @@ public class Parser {
       idx++;
     } else if (tokens.get(idx).getToken().equals(Constantes.ID)) {
       idx++;
+      if (idx == tokens.size()) {
+        throw new Exception("Error sintáctico: se esperaba un signo de asignación");
+      }
       if (tokens.get(idx).getToken().equals(Constantes.ASIGNACION)) {
         idx++;
+        if (idx == tokens.size()) {
+          throw new Exception("Error sintáctico: se esperaba una cadena o una expresión");
+        }
         if (tokens.get(idx).getToken().equals(Constantes.CADENA)) {
           idx++;
         } else {
@@ -77,6 +93,10 @@ public class Parser {
   }
 
   private void expresion() throws Exception {
+    if (idx == tokens.size()) {
+      throw new Exception("Error sintáctico: se esperaba una expresión");
+    }
+
     if (tokens.get(idx).getToken().equals(Constantes.ID) ||
         tokens.get(idx).getToken().equals(Constantes.NUMERO) ||
         tokens.get(idx).getToken().equals(Constantes.DECIMAL)) {
@@ -84,6 +104,10 @@ public class Parser {
     } else if (tokens.get(idx).getToken().equals(Constantes.PARENTESIS_APE)) {
       idx++;
       expresion();
+
+      if (idx == tokens.size()) {
+        throw new Exception("Error sintáctico: se esperaba un operador aritmético");
+      }
       if (Constantes.esOperadorAritmetico(tokens.get(idx).getToken())) {
         idx++;
       } else {
@@ -129,6 +153,11 @@ public class Parser {
 
   private void expresionComparador() throws Exception {
     expresion();
+
+    if (idx == tokens.size()) {
+      throw new Exception("Error sintáctico: se esperaba un operador relacional");
+    }
+
     if (Constantes.esOperadorRelacional(tokens.get(idx).getToken())) {
       idx++;
     } else {
@@ -165,11 +194,8 @@ public class Parser {
     checarToken(Constantes.PARENTESIS_APE, "se esperaba un paréntesis de apertura");
     idx++;
 
-    if (tokens.get(idx).getToken().equals(Constantes.ID)) {
-      idx++;
-    } else {
-      throw new Exception("Error sintactico: se esperaba un identificador");
-    }
+    checarToken(Constantes.ID, "se esperaba un identificador");
+    idx++;
 
     checarToken(Constantes.PARENTESIS_CIE, "se esperaba un paréntesis de cierre");
     idx++;
@@ -181,6 +207,10 @@ public class Parser {
 
     checarToken(Constantes.PARENTESIS_APE, "se esperaba un paréntesis de apertura");
     idx++;
+
+    if (idx == tokens.size()) {
+      throw new Exception("Error sintáctico: se esperaba una cadena o un identificador");
+    }
 
     if (tokens.get(idx).getToken().equals(Constantes.ID) ||
         tokens.get(idx).getToken().equals(Constantes.CADENA)) {
@@ -194,6 +224,9 @@ public class Parser {
   }
 
   private void checarToken(String esperado, String mensajeError) throws Exception {
+    if (idx == tokens.size()) {
+      throw new Exception("Error sintáctico: se esperaba " + mensajeError);
+    }
     if (Constantes.esPalabraReservada(tokens.get(idx).getValor())) {
       if (!tokens.get(idx).getValor().equals(esperado)) {
         throw new Exception("Error sintáctico: " + mensajeError + " en la fila " + tokens.get(idx).getLinea());

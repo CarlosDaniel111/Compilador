@@ -3,6 +3,7 @@ package Controller;
 import java.awt.Color;
 import java.awt.event.*;
 import Model.Scanner.Scanner;
+import Model.Semantico.Semantico;
 import Model.Parser.Parser;
 
 import javax.swing.JFileChooser;
@@ -15,12 +16,14 @@ public class Controller implements ActionListener, KeyListener {
   private View view;
   private Scanner scanner;
   private Parser parser;
+  private Semantico semantico;
 
   public Controller(View view) {
     this.view = view;
     this.view.hazEscuchas(this);
     scanner = new Scanner();
     parser = new Parser();
+    semantico = new Semantico();
   }
 
   @Override
@@ -35,7 +38,11 @@ public class Controller implements ActionListener, KeyListener {
         String texto = archivo.leerArchivo();
         view.getTxtCodigo().setText(texto);
         view.getBtnScanner().setEnabled(true);
-        view.getTxtConsola().setText("");
+        view.getBtnParser().setEnabled(false);
+        view.getBtnSemantico().setEnabled(false);
+        view.getTxtConsolaScanner().setText("");
+        view.getTxtConsolaParser().setText("");
+        view.getTxtConsolaSemantico().setText("");
         view.getTxtTokens().setText("");
       }
       return;
@@ -63,13 +70,13 @@ public class Controller implements ActionListener, KeyListener {
       scanner.analizar(view.getTxtCodigo().getText());
       view.getTxtTokens().setText(scanner.getTokens());
       if (scanner.getErrores().length() == 0) {
-        view.getTxtConsola().setForeground(new Color(31, 185, 62));
-        view.getTxtConsola().setText("Scanner exitoso");
+        view.getTxtConsolaScanner().setForeground(new Color(31, 185, 62));
+        view.getTxtConsolaScanner().setText("Scanner exitoso");
         view.getBtnScanner().setBackground(Color.GREEN);
         view.getBtnParser().setEnabled(true);
       } else {
-        view.getTxtConsola().setForeground(Color.RED);
-        view.getTxtConsola().setText(scanner.getErrores());
+        view.getTxtConsolaScanner().setForeground(Color.RED);
+        view.getTxtConsolaScanner().setText(scanner.getErrores());
         view.getBtnParser().setEnabled(false);
       }
       return;
@@ -77,12 +84,26 @@ public class Controller implements ActionListener, KeyListener {
     if (e.getSource() == view.getBtnParser()) {
       parser.analizar(scanner.getTokensArray());
       if (parser.getError().length() == 0) {
-        view.getTxtConsola().setForeground(new Color(31, 185, 62));
-        view.getTxtConsola().setText("Scanner exitoso\nParser exitoso");
+        view.getTxtConsolaParser().setForeground(new Color(31, 185, 62));
+        view.getTxtConsolaParser().setText("Parser exitoso");
         view.getBtnParser().setBackground(Color.GREEN);
+        view.getBtnSemantico().setEnabled(true);
       } else {
-        view.getTxtConsola().setForeground(Color.RED);
-        view.getTxtConsola().setText(parser.getError());
+        view.getTxtConsolaParser().setForeground(Color.RED);
+        view.getTxtConsolaParser().setText(parser.getError());
+      }
+      return;
+    }
+
+    if (e.getSource() == view.getBtnSemantico()) {
+      semantico.analizar(scanner.getTokensArray());
+      if (semantico.getError().length() == 0) {
+        view.getTxtConsolaSemantico().setForeground(new Color(31, 185, 62));
+        view.getTxtConsolaSemantico().setText("Semantico exitoso");
+        view.getBtnSemantico().setBackground(Color.GREEN);
+      } else {
+        view.getTxtConsolaSemantico().setForeground(Color.RED);
+        view.getTxtConsolaSemantico().setText(semantico.getError());
       }
       return;
     }
@@ -102,6 +123,11 @@ public class Controller implements ActionListener, KeyListener {
   public void keyReleased(KeyEvent e) {
     if (e.getSource() == view.getTxtCodigo()) {
       view.getBtnParser().setEnabled(false);
+      view.getBtnSemantico().setEnabled(false);
+      view.getTxtConsolaScanner().setText("");
+      view.getTxtConsolaParser().setText("");
+      view.getTxtConsolaSemantico().setText("");
+      view.getTxtTokens().setText("");
       if (view.getTxtCodigo().getText().length() == 0) {
         view.getBtnScanner().setEnabled(false);
       } else {

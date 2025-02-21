@@ -7,8 +7,8 @@ import Controller.Controller;
 
 public class View extends JFrame {
 
-  private JButton btnScanner, btnParser;
-  private JTextArea txtCodigo, txtConsola, txtTokens;
+  private JButton btnScanner, btnParser, btnSemantico;
+  private JTextArea txtCodigo, txtTokens, txtConsolaScanner, txtConsolaParser, txtConsolaSemantico;
   private JMenuItem menuAbrir, menuGuardar, menuSalir;
 
   public View() {
@@ -62,26 +62,48 @@ public class View extends JFrame {
     add(panelCentro);
 
     JPanel panelSur = new JPanel();
-    panelSur.setLayout(new BorderLayout());
-    JPanel panelSur1 = new JPanel();
-    panelSur1.setLayout(new BorderLayout());
-    panelSur1.setBorder(BorderFactory.createTitledBorder("Consola"));
-    txtConsola = new JTextArea();
-    txtConsola.setEditable(false);
-    txtConsola.setPreferredSize(new Dimension(0, 100));
-    panelSur1.add(new JScrollPane(txtConsola), BorderLayout.CENTER);
-    panelSur.add(panelSur1, BorderLayout.CENTER);
+    panelSur.setLayout(new GridLayout(0, 3));
 
-    JPanel panelSur2 = new JPanel();
+    // Panel Scanner
+    JPanel panelScanner = new JPanel();
+    panelScanner.setLayout(new BorderLayout());
+    panelScanner.setBorder(BorderFactory.createTitledBorder("Consola Scanner"));
+    txtConsolaScanner = new JTextArea();
+    txtConsolaScanner.setEditable(false);
+    panelScanner.add(new JScrollPane(txtConsolaScanner), BorderLayout.CENTER);
     btnScanner = new JButton("Scanner");
     btnScanner.setContentAreaFilled(true);
     btnScanner.setEnabled(false);
+    panelScanner.add(btnScanner, BorderLayout.SOUTH);
+    panelSur.add(panelScanner);
+
+    // Panel Parser
+    JPanel panelParser = new JPanel();
+    txtConsolaParser = new JTextArea();
+    txtConsolaParser.setEditable(false);
+    txtConsolaParser.setPreferredSize(new Dimension(0, 100));
+    panelParser.setLayout(new BorderLayout());
+    panelParser.setBorder(BorderFactory.createTitledBorder("Consola Parser"));
+    panelParser.add(new JScrollPane(txtConsolaParser), BorderLayout.CENTER);
     btnParser = new JButton("Parser");
     btnParser.setContentAreaFilled(true);
     btnParser.setEnabled(false);
-    panelSur2.add(btnScanner);
-    panelSur2.add(btnParser);
-    panelSur.add(panelSur2, BorderLayout.SOUTH);
+    panelParser.add(btnParser, BorderLayout.SOUTH);
+    panelSur.add(panelParser);
+
+    // Panel Semantico
+    JPanel panelSemantico = new JPanel();
+    txtConsolaSemantico = new JTextArea();
+    txtConsolaSemantico.setEditable(false);
+    panelSemantico.setLayout(new BorderLayout());
+    panelSemantico.setBorder(BorderFactory.createTitledBorder("Consola Semantico"));
+    panelSemantico.add(new JScrollPane(txtConsolaSemantico), BorderLayout.CENTER);
+    btnSemantico = new JButton("Semantico");
+    btnSemantico.setContentAreaFilled(true);
+    btnSemantico.setEnabled(false);
+    panelSemantico.add(btnSemantico, BorderLayout.SOUTH);
+    panelSur.add(panelSemantico);
+
     add(panelSur, BorderLayout.SOUTH);
 
     setVisible(true);
@@ -94,6 +116,7 @@ public class View extends JFrame {
     menuSalir.addActionListener(controlador);
     btnScanner.addActionListener(controlador);
     btnParser.addActionListener(controlador);
+    btnSemantico.addActionListener(controlador);
     txtCodigo.addKeyListener(controlador);
   }
 
@@ -117,15 +140,27 @@ public class View extends JFrame {
     return btnParser;
   }
 
+  public JButton getBtnSemantico() {
+    return btnSemantico;
+  }
+
   public JTextArea getTxtCodigo() {
     return txtCodigo;
   }
 
-  public JTextArea getTxtConsola() {
-    return txtConsola;
-  }
-
   public JTextArea getTxtTokens() {
     return txtTokens;
+  }
+
+  public JTextArea getTxtConsolaScanner() {
+    return txtConsolaScanner;
+  }
+
+  public JTextArea getTxtConsolaParser() {
+    return txtConsolaParser;
+  }
+
+  public JTextArea getTxtConsolaSemantico() {
+    return txtConsolaSemantico;
   }
 }
