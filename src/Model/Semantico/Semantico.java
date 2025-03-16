@@ -150,4 +150,8 @@ public class Semantico {
   public String getError() {
     return error;
   }
+
+  public HashMap<String, Simbolo> getTablaSimbolos() {
+    return tablaSimbolos;
+  }
 }

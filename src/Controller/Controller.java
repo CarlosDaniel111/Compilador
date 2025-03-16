@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.*;
 import Model.Scanner.Scanner;
 import Model.Semantico.Semantico;
+import Model.CodigoIntermedio.CodigoIntermedio;
 import Model.Parser.Parser;
 
 import javax.swing.JFileChooser;
@@ -17,6 +18,7 @@ public class Controller implements ActionListener, KeyListener {
   private Scanner scanner;
   private Parser parser;
   private Semantico semantico;
+  private CodigoIntermedio codigoIntermedio;
 
   public Controller(View view) {
     this.view = view;
@@ -24,6 +26,7 @@ public class Controller implements ActionListener, KeyListener {
     scanner = new Scanner();
     parser = new Parser();
     semantico = new Semantico();
+    codigoIntermedio = new CodigoIntermedio();
   }
 
   @Override
@@ -40,6 +43,7 @@ public class Controller implements ActionListener, KeyListener {
         view.getBtnScanner().setEnabled(true);
         view.getBtnParser().setEnabled(false);
         view.getBtnSemantico().setEnabled(false);
+        view.getBtnCodigoIntermedio().setEnabled(false);
         view.getTxtConsolaScanner().setText("");
         view.getTxtConsolaParser().setText("");
         view.getTxtConsolaSemantico().setText("");
@@ -101,11 +105,17 @@ public class Controller implements ActionListener, KeyListener {
         view.getTxtConsolaSemantico().setForeground(new Color(31, 185, 62));
         view.getTxtConsolaSemantico().setText("Semantico exitoso");
         view.getBtnSemantico().setBackground(Color.GREEN);
+        view.getBtnCodigoIntermedio().setEnabled(true);
       } else {
         view.getTxtConsolaSemantico().setForeground(Color.RED);
         view.getTxtConsolaSemantico().setText(semantico.getError());
       }
       return;
+    }
+
+    if (e.getSource() == view.getBtnCodigoIntermedio()) {
+      codigoIntermedio.generar(scanner.getTokensArray(), semantico.getTablaSimbolos());
+      view.getTxtCodigoIntermedio().setText(codigoIntermedio.getCodigoIntermedio());
     }
   }
 
@@ -124,10 +134,12 @@ public class Controller implements ActionListener, KeyListener {
     if (e.getSource() == view.getTxtCodigo()) {
       view.getBtnParser().setEnabled(false);
       view.getBtnSemantico().setEnabled(false);
+      view.getBtnCodigoIntermedio().setEnabled(false);
       view.getTxtConsolaScanner().setText("");
       view.getTxtConsolaParser().setText("");
       view.getTxtConsolaSemantico().setText("");
       view.getTxtTokens().setText("");
+      view.getTxtCodigoIntermedio().setText("");
       if (view.getTxtCodigo().getText().length() == 0) {
         view.getBtnScanner().setEnabled(false);
       } else {

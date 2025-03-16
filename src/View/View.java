@@ -7,8 +7,9 @@ import Controller.Controller;
 
 public class View extends JFrame {
 
-  private JButton btnScanner, btnParser, btnSemantico;
-  private JTextArea txtCodigo, txtTokens, txtConsolaScanner, txtConsolaParser, txtConsolaSemantico;
+  private JButton btnScanner, btnParser, btnSemantico, btnCodigoIntermedio, btnCodigoObjeto;
+  private JTextArea txtCodigo, txtTokens, txtConsolaScanner,
+      txtConsolaParser, txtConsolaSemantico, txtCodigoIntermedio, txtCodigoObjeto;
   private JMenuItem menuAbrir, menuGuardar, menuSalir;
 
   public View() {
@@ -17,7 +18,7 @@ public class View extends JFrame {
   }
 
   private void hazInterfaz() {
-    setSize(1024, 768);
+    setSize(1224, 768);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
 
@@ -38,31 +39,33 @@ public class View extends JFrame {
     lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
     add(lblTitulo, BorderLayout.NORTH);
 
-    JPanel panelCentro = new JPanel();
-    panelCentro.setLayout(new GridLayout(0, 3));
+    JPanel panelPrincipal = new JPanel();
+    panelPrincipal.setLayout(new GridLayout(0, 2));
 
-    JPanel panelIzq = new JPanel();
-    panelIzq.setLayout(new BorderLayout());
-    panelIzq.setBorder(BorderFactory.createTitledBorder("Codigo fuente"));
+    JPanel panelAnalizadores = new JPanel();
+    JPanel panelCodigoTokens = new JPanel();
+    panelCodigoTokens.setLayout(new GridLayout(0, 2));
+
+    JPanel panelCodigo = new JPanel();
+    panelCodigo.setLayout(new BorderLayout());
+    panelCodigo.setBorder(BorderFactory.createTitledBorder("Codigo fuente"));
     txtCodigo = new JTextArea();
-    panelIzq.add(new JScrollPane(txtCodigo), BorderLayout.CENTER);
-    panelCentro.add(panelIzq);
+    panelCodigo.add(new JScrollPane(txtCodigo), BorderLayout.CENTER);
+    panelCodigoTokens.add(panelCodigo);
 
-    JPanel panelCen = new JPanel();
-    panelCen.setLayout(new GridLayout(0, 1));
-
-    JPanel panelDer = new JPanel();
-    panelDer.setLayout(new BorderLayout());
-    panelDer.setBorder(BorderFactory.createTitledBorder("Tokens"));
+    JPanel panelTokens = new JPanel();
+    panelTokens.setLayout(new BorderLayout());
+    panelTokens.setBorder(BorderFactory.createTitledBorder("Tokens"));
     txtTokens = new JTextArea();
     txtTokens.setEditable(false);
-    panelDer.add(new JScrollPane(txtTokens), BorderLayout.CENTER);
-    panelCentro.add(panelDer);
+    panelTokens.add(new JScrollPane(txtTokens), BorderLayout.CENTER);
+    panelCodigoTokens.add(panelTokens);
 
-    add(panelCentro);
+    panelAnalizadores.setLayout(new GridLayout(0, 1));
+    panelAnalizadores.add(panelCodigoTokens);
 
-    JPanel panelSur = new JPanel();
-    panelSur.setLayout(new GridLayout(0, 3));
+    JPanel panelConsolas = new JPanel();
+    panelConsolas.setLayout(new GridLayout(0, 3));
 
     // Panel Scanner
     JPanel panelScanner = new JPanel();
@@ -75,7 +78,7 @@ public class View extends JFrame {
     btnScanner.setContentAreaFilled(true);
     btnScanner.setEnabled(false);
     panelScanner.add(btnScanner, BorderLayout.SOUTH);
-    panelSur.add(panelScanner);
+    panelConsolas.add(panelScanner);
 
     // Panel Parser
     JPanel panelParser = new JPanel();
@@ -89,7 +92,7 @@ public class View extends JFrame {
     btnParser.setContentAreaFilled(true);
     btnParser.setEnabled(false);
     panelParser.add(btnParser, BorderLayout.SOUTH);
-    panelSur.add(panelParser);
+    panelConsolas.add(panelParser);
 
     // Panel Semantico
     JPanel panelSemantico = new JPanel();
@@ -102,9 +105,40 @@ public class View extends JFrame {
     btnSemantico.setContentAreaFilled(true);
     btnSemantico.setEnabled(false);
     panelSemantico.add(btnSemantico, BorderLayout.SOUTH);
-    panelSur.add(panelSemantico);
+    panelConsolas.add(panelSemantico);
 
-    add(panelSur, BorderLayout.SOUTH);
+    panelAnalizadores.add(panelConsolas);
+    panelPrincipal.add(panelAnalizadores, BorderLayout.CENTER);
+
+    // Paneles de traductores
+    JPanel panelTraductores = new JPanel();
+    panelTraductores.setLayout(new GridLayout(0, 1));
+    JPanel panelCodigoIntermedio = new JPanel();
+    panelCodigoIntermedio.setLayout(new BorderLayout());
+    panelCodigoIntermedio.setBorder(BorderFactory.createTitledBorder("Codigo intermedio"));
+    txtCodigoIntermedio = new JTextArea();
+    txtCodigoIntermedio.setEditable(false);
+    panelCodigoIntermedio.add(new JScrollPane(txtCodigoIntermedio), BorderLayout.CENTER);
+    btnCodigoIntermedio = new JButton("Codigo intermedio");
+    btnCodigoIntermedio.setContentAreaFilled(true);
+    btnCodigoIntermedio.setEnabled(false);
+    panelCodigoIntermedio.add(btnCodigoIntermedio, BorderLayout.SOUTH);
+    panelTraductores.add(panelCodigoIntermedio);
+
+    JPanel panelCodigoObjeto = new JPanel();
+    panelCodigoObjeto.setLayout(new BorderLayout());
+    panelCodigoObjeto.setBorder(BorderFactory.createTitledBorder("Codigo objeto"));
+    txtCodigoObjeto = new JTextArea();
+    txtCodigoObjeto.setEditable(false);
+    panelCodigoObjeto.add(new JScrollPane(txtCodigoObjeto), BorderLayout.CENTER);
+    btnCodigoObjeto = new JButton("Codigo objeto");
+    btnCodigoObjeto.setContentAreaFilled(true);
+    btnCodigoObjeto.setEnabled(false);
+    panelCodigoObjeto.add(btnCodigoObjeto, BorderLayout.SOUTH);
+    panelTraductores.add(panelCodigoObjeto);
+
+    panelPrincipal.add(panelTraductores);
+    add(panelPrincipal, BorderLayout.CENTER);
 
     setVisible(true);
 
@@ -117,6 +151,7 @@ public class View extends JFrame {
     btnScanner.addActionListener(controlador);
     btnParser.addActionListener(controlador);
     btnSemantico.addActionListener(controlador);
+    btnCodigoIntermedio.addActionListener(controlador);
     txtCodigo.addKeyListener(controlador);
   }
 
@@ -144,6 +179,10 @@ public class View extends JFrame {
     return btnSemantico;
   }
 
+  public JButton getBtnCodigoIntermedio() {
+    return btnCodigoIntermedio;
+  }
+
   public JTextArea getTxtCodigo() {
     return txtCodigo;
   }
@@ -162,5 +201,13 @@ public class View extends JFrame {
 
   public JTextArea getTxtConsolaSemantico() {
     return txtConsolaSemantico;
+  }
+
+  public JTextArea getTxtCodigoIntermedio() {
+    return txtCodigoIntermedio;
+  }
+
+  public JTextArea getTxtCodigoObjeto() {
+    return txtCodigoObjeto;
   }
 }
