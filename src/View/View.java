@@ -48,8 +48,9 @@ public class View extends JFrame {
 
     JPanel panelCodigo = new JPanel();
     panelCodigo.setLayout(new BorderLayout());
-    panelCodigo.setBorder(BorderFactory.createTitledBorder("Codigo fuente"));
+    panelCodigo.setBorder(BorderFactory.createTitledBorder("Codigo Fuente"));
     txtCodigo = new JTextArea();
+    txtCodigo.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
     panelCodigo.add(new JScrollPane(txtCodigo), BorderLayout.CENTER);
     panelCodigoTokens.add(panelCodigo);
 
@@ -73,6 +74,8 @@ public class View extends JFrame {
     panelScanner.setBorder(BorderFactory.createTitledBorder("Consola Scanner"));
     txtConsolaScanner = new JTextArea();
     txtConsolaScanner.setEditable(false);
+    txtConsolaScanner.setLineWrap(true);
+    txtConsolaScanner.setWrapStyleWord(true);
     panelScanner.add(new JScrollPane(txtConsolaScanner), BorderLayout.CENTER);
     btnScanner = new JButton("Scanner");
     btnScanner.setContentAreaFilled(true);
@@ -84,7 +87,8 @@ public class View extends JFrame {
     JPanel panelParser = new JPanel();
     txtConsolaParser = new JTextArea();
     txtConsolaParser.setEditable(false);
-    txtConsolaParser.setPreferredSize(new Dimension(0, 100));
+    txtConsolaParser.setLineWrap(true);
+    txtConsolaParser.setWrapStyleWord(true);
     panelParser.setLayout(new BorderLayout());
     panelParser.setBorder(BorderFactory.createTitledBorder("Consola Parser"));
     panelParser.add(new JScrollPane(txtConsolaParser), BorderLayout.CENTER);
@@ -98,6 +102,8 @@ public class View extends JFrame {
     JPanel panelSemantico = new JPanel();
     txtConsolaSemantico = new JTextArea();
     txtConsolaSemantico.setEditable(false);
+    txtConsolaSemantico.setLineWrap(true);
+    txtConsolaSemantico.setWrapStyleWord(true);
     panelSemantico.setLayout(new BorderLayout());
     panelSemantico.setBorder(BorderFactory.createTitledBorder("Consola Semantico"));
     panelSemantico.add(new JScrollPane(txtConsolaSemantico), BorderLayout.CENTER);
@@ -115,9 +121,10 @@ public class View extends JFrame {
     panelTraductores.setLayout(new GridLayout(0, 1));
     JPanel panelCodigoIntermedio = new JPanel();
     panelCodigoIntermedio.setLayout(new BorderLayout());
-    panelCodigoIntermedio.setBorder(BorderFactory.createTitledBorder("Codigo intermedio"));
+    panelCodigoIntermedio.setBorder(BorderFactory.createTitledBorder("Codigo Intermedio"));
     txtCodigoIntermedio = new JTextArea();
     txtCodigoIntermedio.setEditable(false);
+    txtCodigoIntermedio.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
     panelCodigoIntermedio.add(new JScrollPane(txtCodigoIntermedio), BorderLayout.CENTER);
     btnCodigoIntermedio = new JButton("Codigo intermedio");
     btnCodigoIntermedio.setContentAreaFilled(true);
@@ -127,7 +134,7 @@ public class View extends JFrame {
 
     JPanel panelCodigoObjeto = new JPanel();
     panelCodigoObjeto.setLayout(new BorderLayout());
-    panelCodigoObjeto.setBorder(BorderFactory.createTitledBorder("Codigo objeto"));
+    panelCodigoObjeto.setBorder(BorderFactory.createTitledBorder("Codigo Objeto"));
     txtCodigoObjeto = new JTextArea();
     txtCodigoObjeto.setEditable(false);
     panelCodigoObjeto.add(new JScrollPane(txtCodigoObjeto), BorderLayout.CENTER);
