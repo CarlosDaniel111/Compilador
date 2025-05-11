@@ -234,7 +234,7 @@ public class GeneradorCodigo {
 
   private void generarLeerNumero(String memoria) {
     agregarLinea("", "MOV", "BX,0");
-    agregarBinarioCodigo("1011 1011 0000 0000");
+    agregarBinarioCodigo("1011 1011 0000 0000 0000 0000");
     agregarLinea("LEERNUM" + cntLeerNumero + ":");
     agregarLinea("", "MOV", "AH, 01H");
     agregarBinarioCodigo("1011 0100 0000 0001");
