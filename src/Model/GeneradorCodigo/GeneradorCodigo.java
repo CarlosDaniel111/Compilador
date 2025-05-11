@@ -268,7 +268,7 @@ public class GeneradorCodigo {
 
   private void generarLeerCadena(String memoria) {
     agregarLinea("", "MOV", "SI, 0");
-    agregarBinarioCodigo("1011 1110 0000 0000");
+    agregarBinarioCodigo("1011 1110 0000 0000 0000 0000");
     agregarLinea("LEERCAD" + cntLeerCadena + ":");
     agregarLinea("", "MOV", "AH, 01H");
     agregarBinarioCodigo("1011 0100 0000 0001");
@@ -340,12 +340,12 @@ public class GeneradorCodigo {
     agregarLinea("", "MOV", "AX, " + memoria);
     agregarBinarioCodigo("1000 1011 0000 0110 " + Convertidor.decToBin(memoriaADireccion.get(memoria), 16, false));
     agregarLinea("", "MOV", "BX, 10");
-    agregarBinarioCodigo("1011 1011 0000 1010");
+    agregarBinarioCodigo("1011 1011 0000 1010 0000 0000");
     agregarLinea("", "MOV", "CX, 0");
-    agregarBinarioCodigo("1011 1001 0000 0000");
+    agregarBinarioCodigo("1011 1001 0000 0000 0000 0000");
     agregarLinea("PUSHNUM" + cntImprimirNumero + ":");
     agregarLinea("", "MOV", "DX, 0");
-    agregarBinarioCodigo("1011 1010 0000 0000");
+    agregarBinarioCodigo("1011 1010 0000 0000 0000 0000");
     agregarLinea("", "DIV", "BX");
     agregarBinarioCodigo("1111 0111 1111 0011");
     agregarLinea("", "ADD", "DL, 48");
@@ -355,13 +355,13 @@ public class GeneradorCodigo {
     agregarLinea("", "INC", "CX");
     agregarBinarioCodigo("0100 0001");
     agregarLinea("", "CMP", "AX, 0");
-    agregarBinarioCodigo("0011 1101 0000 0000");
+    agregarBinarioCodigo("0011 1101 0000 0000 0000 0000");
     agregarLinea("", "JNE", "PUSHNUM" + cntImprimirNumero);
     agregarBinarioCodigo("0111 0101 1000 1011");
 
     agregarLinea("MOSTRARNUM" + cntImprimirNumero + ":");
     agregarLinea("", "MOV", "DX, 0");
-    agregarBinarioCodigo("1011 1010 0000 0000");
+    agregarBinarioCodigo("1011 1010 0000 0000 0000 0000");
     agregarLinea("", "POP", "DX");
     agregarBinarioCodigo("0101 1010");
     agregarLinea("", "MOV", "AH, 02H");
