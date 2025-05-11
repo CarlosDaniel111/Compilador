@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.event.*;
 import Model.Scanner.Scanner;
 import Model.Semantico.Semantico;
-import Model.CodigoIntermedio.CodigoIntermedio;
+import Model.GeneradorCodigo.GeneradorCodigo;
 import Model.Parser.Parser;
 
 import javax.swing.JFileChooser;
@@ -18,7 +18,7 @@ public class Controller implements ActionListener, KeyListener {
   private Scanner scanner;
   private Parser parser;
   private Semantico semantico;
-  private CodigoIntermedio codigoIntermedio;
+  private GeneradorCodigo codigoIntermedio;
 
   public Controller(View view) {
     this.view = view;
@@ -26,7 +26,7 @@ public class Controller implements ActionListener, KeyListener {
     scanner = new Scanner();
     parser = new Parser();
     semantico = new Semantico();
-    codigoIntermedio = new CodigoIntermedio();
+    codigoIntermedio = new GeneradorCodigo();
   }
 
   @Override
@@ -47,6 +47,8 @@ public class Controller implements ActionListener, KeyListener {
         view.getTxtConsolaScanner().setText("");
         view.getTxtConsolaParser().setText("");
         view.getTxtConsolaSemantico().setText("");
+        view.getTxtCodigoIntermedio().setText("");
+        view.getTxtCodigoObjeto().setText("");
         view.getTxtTokens().setText("");
       }
       return;
@@ -116,6 +118,13 @@ public class Controller implements ActionListener, KeyListener {
     if (e.getSource() == view.getBtnCodigoIntermedio()) {
       codigoIntermedio.generar(scanner.getTokensArray(), semantico.getTablaSimbolos());
       view.getTxtCodigoIntermedio().setText(codigoIntermedio.getCodigoIntermedio());
+      view.getBtnCodigoObjeto().setEnabled(true);
+    }
+
+    if (e.getSource() == view.getBtnCodigoObjeto()) {
+      // Generar el código objeto
+      String codigoObjeto = codigoIntermedio.getCodigoObjeto();
+      view.getTxtCodigoObjeto().setText(codigoObjeto);
     }
   }
 
@@ -140,6 +149,7 @@ public class Controller implements ActionListener, KeyListener {
       view.getTxtConsolaSemantico().setText("");
       view.getTxtTokens().setText("");
       view.getTxtCodigoIntermedio().setText("");
+      view.getTxtCodigoObjeto().setText("");
       if (view.getTxtCodigo().getText().length() == 0) {
         view.getBtnScanner().setEnabled(false);
       } else {

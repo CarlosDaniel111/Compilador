@@ -159,6 +159,7 @@ public class View extends JFrame {
     btnParser.addActionListener(controlador);
     btnSemantico.addActionListener(controlador);
     btnCodigoIntermedio.addActionListener(controlador);
+    btnCodigoObjeto.addActionListener(controlador);
     txtCodigo.addKeyListener(controlador);
   }
 
@@ -188,6 +189,10 @@ public class View extends JFrame {
 
   public JButton getBtnCodigoIntermedio() {
     return btnCodigoIntermedio;
+  }
+
+  public JButton getBtnCodigoObjeto() {
+    return btnCodigoObjeto;
   }
 
   public JTextArea getTxtCodigo() {
