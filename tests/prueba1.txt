@@ -2,7 +2,6 @@ ITC
   cad nombre;
   nombre = 'Carlos';
   fracc altura;
-  altura = 1.82;
   ent calificacion;
   MOSTRAR('Ingresa tu calificacion');
   LEER(calificacion);
